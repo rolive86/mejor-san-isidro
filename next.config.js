@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Permite que Next.js sirva la PWA correctamente
   async headers() {
     return [
       {
@@ -11,6 +10,11 @@ const nextConfig = {
         ],
       },
     ]
+  },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '4.5mb',
+    },
   },
 }
 

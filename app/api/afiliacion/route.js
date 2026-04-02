@@ -1,4 +1,11 @@
 // app/api/afiliacion/route.js
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '10mb',
+    },
+  },
+}
 import { guardarAfiliacion } from '@/lib/afiliados'
 import { NextResponse } from 'next/server'
 
