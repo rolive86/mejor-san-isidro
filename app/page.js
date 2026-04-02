@@ -668,14 +668,31 @@ export default function App() {
     setLoading(true)
     setError(null)
     try {
-      const fd = new FormData()
-      fd.append('formData', JSON.stringify(form))
-      if (docs?.frente?.file) fd.append('dniFrente', docs.frente.file)
-      if (docs?.dorso?.file)  fd.append('dniDorso',  docs.dorso.file)
-      if (firma)              fd.append('firma', firma)
-
-      const res = await fetch('/api/afiliacion', { method: 'POST', body: fd }).then(r => r.json())
-
+      const { createClient } = await import('@supabase/supabase-js')
+      const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_AFILIADOS_URL, process.env.NEXT_PUBLIC_SUPABASE_AFILIADOS_ANON_KEY)
+      const folder = Date.now().toString()
+      let dniFrente_path = null, dniDorso_path = null, firma_path = null
+      if (docs?.frente?.file) {
+        const ext = docs.frente.file.name.split('.').pop().toLowerCase()
+        const path = folder + '/frente.' + ext
+        const { error: e } = await sb.storage.from('dni-docs').upload(path, docs.frente.file, { upsert: true })
+        if (!e) dniFrente_path = path; else console.warn('frente:', e)
+      }
+      if (docs?.dorso?.file) {
+        const ext = docs.dorso.file.name.split('.').pop().toLowerCase()
+        const path = folder + '/dorso.' + ext
+        const { error: e } = await sb.storage.from('dni-docs').upload(path, docs.dorso.file, { upsert: true })
+        if (!e) dniDorso_path = path; else console.warn('dorso:', e)
+      }
+      if (firma) {
+        const base64 = firma.replace(/^data:image\/png;base64,/, '')
+        const binary = Uint8Array.from(atob(base64), c => c.charCodeAt(0))
+        const path = folder + '/firma.png'
+        const { error: e } = await sb.storage.from('firmas').upload(path, binary, { contentType: 'image/png', upsert: true })
+        if (!e) firma_path = path; else console.warn('firma:', e)
+      }
+      const payload = { ...form, dniFrente_path, dniDorso_path, firma_path, folder }
+      const res = await fetch('/api/afiliacion', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }).then(r => r.json())
       if (!res.ok) throw new Error(res.error || 'Error al guardar.')
       setNumSeg(res.numeroSeguimiento)
     } catch (e) {
@@ -683,23 +700,6 @@ export default function App() {
     }
     setLoading(false)
   }
-
-  const done = !!numSeg
-
-  return (
-      <div style={{ background: C.navy, maxWidth: 480, margin: '0 auto', minHeight: '100dvh', display: 'flex', flexDirection: 'column' }}>
-
-        {/* Header */}
-        <div style={{ background: C.navy, padding: '18px 20px 0', position: 'sticky', top: 0, zIndex: 10 }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: done ? 0 : 4 }}>
-            <img src="/logo.png" alt="MEJOR San Isidro" style={{ height: 48, width: 'auto', objectFit: 'contain' }} />
-            <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 18, fontWeight: 700, color: '#d6a44c', letterSpacing: '1px' }}>Afiliate!</span>
-            <HamburgerMenu />
-          </div>
-        </div>
-
-        {/* Content */}
-        <div style={{ flex: 1, padding: '20px 20px 40px', overflowY: 'auto' }}>
           {error && <Alert type="error">⚠️ {error}</Alert>}
 
           {done
