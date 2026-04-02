@@ -285,9 +285,9 @@ function Step1({ onNext }) {
       if (!res.encontrado) {
         setResult({ type: 'error', msg: '❌ DNI no encontrado en el padrón. Verificá el número ingresado.' })
       } else if (res.afiliado) {
-        setResult({ type: 'error', msg: `⚠️ Este DNI ya se encuentra afiliado (${res.partido}). No es posible continuar.` })
-      } else {
-        setResult({ type: 'success', msg: '✅ Verificado. Podés continuar con la afiliación.' })
+        const tipo = res.yaEnBase ? 'success' : 'error'
+        const msg = res.yaEnBase ? 'Ud. ya se encuentra en la base de Afiliados de MEJOR San Isidro.' : 'Este DNI ya se encuentra afiliado a otro partido. No puede continuar.'
+        setResult({ type: tipo, msg })
         setTimeout(() => onNext(res.data), 900)
       }
     } catch {
