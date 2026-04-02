@@ -281,26 +281,26 @@ function Step1({ onNext }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ dni, genero }),
       }).then(r => r.json())
-
       if (!res.encontrado) {
-        setResult({ type: 'error', msg: '❌ DNI no encontrado en el padrón. Verificá el número ingresado.' })
+        setResult({ type: 'error', msg: 'DNI no encontrado en el padron. Verifica el numero ingresado.' })
       } else if (res.afiliado) {
         const tipo = res.yaEnBase ? 'success' : 'error'
-        const msg = res.yaEnBase ? 'Ud. ya se encuentra en la base de Afiliados de MEJOR San Isidro.' : 'Este DNI ya se encuentra afiliado a otro partido. No puede continuar.'
+        const msg = res.yaEnBase ? 'Ud. ya se encuentra Afiliado/a a MEJOR San Isidro.' : 'Ud. ya se encuentra afiliado/a a otro partido o agrupacion.'
         setResult({ type: tipo, msg })
+      } else {
+        setResult({ type: 'success', msg: 'Verificado. Podes continuar con la afiliacion.' })
         setTimeout(() => onNext(res.data), 900)
       }
     } catch {
-      setResult({ type: 'error', msg: '⚠️ Error de conexión. Intentá nuevamente.' })
+      setResult({ type: 'error', msg: 'Error de conexion. Intenta nuevamente.' })
     }
     setLoading(false)
   }
-
   return (
     <div className="screen">
       <div style={{ marginBottom: 22 }}>
         <h2 style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 26, fontWeight: 700, marginBottom: 4 }}>Verificación de Identidad</h2>
-        <p style={{ fontSize: 14, color: C.gray, lineHeight: 1.5 }}>Ingres\u00e1 tu DNI y g\u00e9nero para afiliarte!</p>
+        <p style={{ fontSize: 14, color: C.gray, lineHeight: 1.5 }}>Ingresa tu DNI y genero para afiliarte!</p>
       </div>
 
       <Card>
