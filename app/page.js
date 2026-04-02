@@ -700,20 +700,20 @@ export default function App() {
     }
     setLoading(false)
   }
-          {error && <Alert type="error">⚠️ {error}</Alert>}
-
-          {done
-            ? <Success numSeg={numSeg} onRestart={restart} />
-            : step === 1 ? <Step1 onNext={d  => { setPadron(d); setStep(2) }} />
-            : step === 2 ? <Step2 padron={padron} onNext={d => { setForm(d); setStep(3) }} onBack={() => setStep(1)} />
-            : step === 3 ? <Step3 onNext={d => { setDocs(d); setStep(4) }} onBack={() => setStep(2)} />
-            : <Step4 onNext={handleSubmit} onBack={() => setStep(3)} loading={loading} />
-          }
+  const done = !!numSeg
+  return (
+      <div style={{ background: C.navy, maxWidth: 480, margin: '0 auto', minHeight: '100dvh', display: 'flex', flexDirection: 'column' }}>
+        {/* Header */}
+        <div style={{ background: C.navy, padding: '18px 20px 0', position: 'sticky', top: 0, zIndex: 10 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: done ? 0 : 4 }}>
+            <img src="/logo.png" alt="MEJOR San Isidro" style={{ height: 48, width: 'auto', objectFit: 'contain' }} />
+            <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 18, fontWeight: 700, color: '#d6a44c', letterSpacing: '1px' }}>Afiliate!</span>
+            <HamburgerMenu />
+          </div>
+          {!done && <ProgressBar step={step} />}
         </div>
-      </div>
-  )
-}
-
+        {/* Content */}
+        <div style={{ flex: 1, padding: '20px 20px 40px', overflowY: 'auto' }}>
 
 
 
