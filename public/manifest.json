@@ -1,0 +1,13 @@
+{
+  "name": "MEJOR San Isidro – Afiliación",
+  "short_name": "Afiliación MSI",
+  "description": "Solicitud de afiliación al partido MEJOR San Isidro",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#061b30",
+  "theme_color": "#061b30",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "/favicon.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
