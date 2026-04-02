@@ -300,7 +300,7 @@ function Step1({ onNext }) {
     <div className="screen">
       <div style={{ marginBottom: 22 }}>
         <h2 style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 26, fontWeight: 700, marginBottom: 4 }}>Verificación de Identidad</h2>
-        <p style={{ fontSize: 14, color: C.gray, lineHeight: 1.5 }}>Ingresá tu DNI y género para consultar el padrón electoral.</p>
+        <p style={{ fontSize: 14, color: C.gray, lineHeight: 1.5 }}>Ingres\u00e1 tu DNI y g\u00e9nero para afiliarte!</p>
       </div>
 
       <Card>
@@ -336,7 +336,7 @@ function Step1({ onNext }) {
 
         <Btn onClick={verify} disabled={!ready}
           style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
-          {loading ? <><Spinner /> Consultando padrón…</> : '🔍 Consultar Padrón'}
+          {loading ? <><Spinner /> Consultando padr\u00f3n\u2026</> : 'Afiliarme'}
         </Btn>
       </Card>
     </div>
@@ -693,9 +693,9 @@ export default function App() {
         <div style={{ background: C.navy, padding: '18px 20px 0', position: 'sticky', top: 0, zIndex: 10 }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: done ? 0 : 4 }}>
             <img src="/logo.png" alt="MEJOR San Isidro" style={{ height: 48, width: 'auto', objectFit: 'contain' }} />
+            <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 18, fontWeight: 700, color: '#d6a44c', letterSpacing: '1px' }}>Afiliate!</span>
             <HamburgerMenu />
           </div>
-          {!done && <ProgressBar step={step} />}
         </div>
 
         {/* Content */}
