@@ -11,6 +11,13 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Faltan datos.' }, { status: 400 })
     }
 
+    // DNI de prueba — siempre pasa, toma datos de 92730218
+    if (String(dni).trim() === '11111111') {
+      const { consultarPadron } = await import('@/lib/padron')
+      const resultado = await consultarPadron('92730218', genero)
+      return NextResponse.json(resultado)
+    }
+
     // 1. Verificar si ya está en la base de afiliados
     const sb = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_AFILIADOS_URL,
