@@ -720,3 +720,15 @@ export default function App() {
 
 
 
+          {error && <Alert type="error">{error}</Alert>}
+          {done
+            ? <Success numSeg={numSeg} onRestart={restart} />
+            : step === 1 ? <Step1 onNext={d  => { setPadron(d); setStep(2) }} />
+            : step === 2 ? <Step2 padron={padron} onNext={d => { setForm(d); setStep(3) }} onBack={() => setStep(1)} />
+            : step === 3 ? <Step3 onNext={d => { setDocs(d); setStep(4) }} onBack={() => setStep(2)} />
+            : <Step4 onNext={handleSubmit} onBack={() => setStep(3)} loading={loading} />
+          }
+        </div>
+      </div>
+  )
+}
